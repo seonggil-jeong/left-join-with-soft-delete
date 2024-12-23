@@ -21,9 +21,9 @@ public class OrderQueryRepositoryImpl {
     public List<Order> findAllOrders() {
         return queryFactory
                 .selectFrom(order)
-                .leftJoin(order.reviews, review)
+                .leftJoin(review)
+                .on(review.order.id.eq(order.id).and(review.deletedAt.isNull()))
                 .fetchJoin()
-                .where(review.deletedAt.isNull())
                 .fetch();
     }
 
